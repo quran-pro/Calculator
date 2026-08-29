@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resistor Color Code Calculator — 4-Band Resistor Value | CalcTape</title>
+<meta name="description" content="Decode a 4-band resistor color code into its resistance value and tolerance.">
+<link rel="canonical" href="https://calctape.example.com/calc/resistor.html">
+<meta property="og:title" content="Resistor Color Code Calculator — 4-Band Resistor Value | CalcTape">
+<meta property="og:description" content="Decode a 4-band resistor color code into its resistance value and tolerance.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/main.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Resistor Color Code Calculator",
+  "applicationCategory":"UtilityApplication",
+  "operatingSystem":"Any",
+  "description":"Decode a 4-band resistor color code.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://calctape.example.com/index.html"},
+    {"@type":"ListItem","position":2,"name":"Electronics & Circuits","item":"https://calctape.example.com/index.html#electronics"},
+    {"@type":"ListItem","position":3,"name":"Resistor Color Code Calculator","item":"https://calctape.example.com/calc/resistor.html"}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing</a>
+      <a href="../index.html#everyday">Everyday</a>
+      <a href="../index.html#internet">Internet</a>
+      <div class="nav-more">
+        <button class="nav-more-btn" id="moreBtn" type="button" aria-haspopup="true" aria-expanded="false">More <span class="caret">&#9662;</span></button>
+        <div class="nav-more-menu" id="moreMenu">
+          <a href="../index.html#entertainment">Entertainment</a>
+          <a href="../index.html#transport">Transportation</a>
+          <a href="../index.html#electronics">Electronics</a>
+          <a href="../index.html#weather">Weather</a>
+          <a href="../index.html#measure">Measurements</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#electronics">Electronics & Circuits</a> / Resistor Color Code Calculator</div>
+<div class="wrap calc-page" id="main">
+  <div class="calc-head">
+    <span class="eyebrow">Electronics & Circuits</span>
+    <h1>Resistor Color Code Calculator</h1>
+    <p>Select the color bands on a 4-band resistor to read its resistance value and tolerance.</p>
+  </div>
+  <div class="calc-layout">
+    <div class="panel">
+      <h2>Enter details</h2>
+      <div class="field"><label for="rc1">Band 1 (1st digit)</label><select id="rc1"><option value="0">Black</option><option value="1">Brown</option><option value="2">Red</option><option value="3">Orange</option><option value="4">Yellow</option><option value="5">Green</option><option value="6">Blue</option><option value="7">Violet</option><option value="8">Grey</option><option value="9">White</option></select></div>      <div class="field"><label for="rc2">Band 2 (2nd digit)</label><select id="rc2"><option value="0">Black</option><option value="1">Brown</option><option value="2">Red</option><option value="3">Orange</option><option value="4">Yellow</option><option value="5">Green</option><option value="6">Blue</option><option value="7">Violet</option><option value="8">Grey</option><option value="9">White</option></select></div>      <div class="field"><label for="rc3">Band 3 (multiplier)</label><select id="rc3"><option value="1">Black ×1</option><option value="10">Brown ×10</option><option value="100">Red ×100</option><option value="1000">Orange ×1k</option><option value="10000">Yellow ×10k</option><option value="100000">Green ×100k</option><option value="1000000">Blue ×1M</option><option value="0.1">Gold ×0.1</option><option value="0.01">Silver ×0.01</option></select></div>      <div class="field"><label for="rc4">Band 4 (tolerance)</label><select id="rc4"><option value="5">Gold ±5%</option><option value="10">Silver ±10%</option><option value="1">Brown ±1%</option><option value="2">Red ±2%</option></select></div>
+      <button class="calc-btn" onclick="calcResistor()">Decode resistor</button>
+    </div>
+    <div class="panel result-panel">
+      <h2>Result</h2>
+      <div id="rcOut" class="placeholder">Select bands to see the resistance value.</div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h2>How it works</h2>
+    <p>The first two color bands give a two-digit number, the third band is a multiplier applied to that number, and the fourth band states the tolerance — the manufacturer's guaranteed accuracy of the printed value.</p>
+    <h2>Frequently asked questions</h2>
+    <dl class="faq">
+      <dt>What about 5-band resistors?</dt>
+      <dd>5-band resistors use three digit bands instead of two for extra precision, followed by a multiplier and tolerance band, using the same color-to-number scheme.</dd>
+    </dl>
+  </div>
+</div>
+<script>
+function calcResistor(){
+  const d1 = parseInt(document.getElementById('rc1').value,10);
+  const d2 = parseInt(document.getElementById('rc2').value,10);
+  const mult = parseFloat(document.getElementById('rc3').value);
+  const tol = document.getElementById('rc4').value;
+  const out = document.getElementById('rcOut');
+  const base = (d1*10+d2)*mult;
+  let display = base;
+  let unit = 'Ω';
+  if(base>=1000000){ display = base/1000000; unit='MΩ'; }
+  else if(base>=1000){ display = base/1000; unit='kΩ'; }
+  out.innerHTML = `<div class="result-figure">${display.toLocaleString(undefined,{maximumFractionDigits:2})}<span class="result-unit">${unit}</span></div>
+  <div class="result-list">
+    <div><span>Exact value</span><b>${base.toLocaleString(undefined,{maximumFractionDigits:2})} Ω</b></div>
+    <div><span>Tolerance</span><b>±${tol}%</b></div>
+  </div>`;
+}
+</script>
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+      <p>45+ free calculators for date &amp; time, home, money, electronics and more. No sign-up, no clutter, just fast answers.</p>
+      <div class="social-links">
+      <a href="#" class="social-icon" aria-label="Facebook" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M13.5 21v-7.6h2.6l.4-3H13.5V8.3c0-.87.24-1.46 1.5-1.46h1.6V4.14C16.3 4.1 15.4 4 14.3 4c-2.28 0-3.8 1.39-3.8 3.94v2.46H8v3h2.5V21h3z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="X (Twitter)" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M18.9 3H22l-7.2 8.2L23 21h-6.6l-5.2-6.4L5.3 21H2.2l7.7-8.8L2 3h6.7l4.7 5.9L18.9 3zm-1.1 16h1.7L7.3 4.9H5.5L17.8 19z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="Instagram" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2zm0 5.9a2.3 2.3 0 1 1 0-4.6 2.3 2.3 0 0 1 0 4.6zM16.9 6.2a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7z"/><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5zm3.5 15a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5h10A3.5 3.5 0 0 1 20.5 7v10z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="YouTube" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5A2.7 2.7 0 0 0 2.4 7.6 28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15V9l5.2 3-5.2 3z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h3>Categories</h3>
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing &amp; Building</a>
+      <a href="../index.html#everyday">Everyday Utility</a>
+      <a href="../index.html#electronics">Electronics</a>
+      <a href="../index.html#internet">Internet</a>
+    </div>
+    <div class="footer-col">
+      <h3>Popular Tools</h3>
+      <a href="../calc/age.html">Age Calculator</a>
+      <a href="../calc/date.html">Date Calculator</a>
+      <a href="../calc/tip.html">Tip Calculator</a>
+      <a href="../calc/gpa.html">GPA Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h3>Our Other Projects</h3>
+      <a href="https://quran-pro.github.io" target="_blank" rel="noopener">Quran Pro</a>
+      <a href="https://quran-pro.github.io/namaz-guide.html" target="_blank" rel="noopener">Namaz Guide</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <div>&copy; 2026 CalcTape. All calculators are provided for estimation purposes only.</div>
+    <div><a href="../index.html">All calculators</a></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shoe Size Converter — US, UK, EU & CM | CalcTape</title>
+<meta name="description" content="Convert shoe sizes between US, UK, EU and centimeters for men's and women's sizing.">
+<link rel="canonical" href="https://calctape.example.com/calc/shoesize.html">
+<meta property="og:title" content="Shoe Size Converter — US, UK, EU & CM | CalcTape">
+<meta property="og:description" content="Convert shoe sizes between US, UK, EU and centimeters for men's and women's sizing.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/main.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Shoe Size Conversion",
+  "applicationCategory":"UtilityApplication",
+  "operatingSystem":"Any",
+  "description":"Convert shoe sizes between US, UK, EU and cm.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://calctape.example.com/index.html"},
+    {"@type":"ListItem","position":2,"name":"Everyday Utility","item":"https://calctape.example.com/index.html#everyday"},
+    {"@type":"ListItem","position":3,"name":"Shoe Size Conversion","item":"https://calctape.example.com/calc/shoesize.html"}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing</a>
+      <a href="../index.html#everyday">Everyday</a>
+      <a href="../index.html#internet">Internet</a>
+      <div class="nav-more">
+        <button class="nav-more-btn" id="moreBtn" type="button" aria-haspopup="true" aria-expanded="false">More <span class="caret">&#9662;</span></button>
+        <div class="nav-more-menu" id="moreMenu">
+          <a href="../index.html#entertainment">Entertainment</a>
+          <a href="../index.html#transport">Transportation</a>
+          <a href="../index.html#electronics">Electronics</a>
+          <a href="../index.html#weather">Weather</a>
+          <a href="../index.html#measure">Measurements</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#everyday">Everyday Utility</a> / Shoe Size Conversion</div>
+<div class="wrap calc-page" id="main">
+  <div class="calc-head">
+    <span class="eyebrow">Everyday Utility</span>
+    <h1>Shoe Size Conversion</h1>
+    <p>Convert a shoe size between US, UK, EU and centimeters for men's or women's sizing.</p>
+  </div>
+  <div class="calc-layout">
+    <div class="panel">
+      <h2>Enter details</h2>
+      <div class="field"><label for="shGender">Sizing for</label><select id="shGender"><option value="mens">Men's</option><option value="womens">Women's</option></select></div>      <div class="field"><label for="shFrom">From system</label><select id="shFrom"><option value="us">US</option><option value="uk">UK</option><option value="eu">EU</option></select></div>      <div class="field"><label for="shSize">Size</label><input type="number" id="shSize" value="9" step="0.5"></div>
+      <button class="calc-btn" onclick="calcShoe()">Convert size</button>
+    </div>
+    <div class="panel result-panel">
+      <h2>Result</h2>
+      <div id="shOut" class="placeholder">Enter a size to convert.</div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h2>How it works</h2>
+    <p>Shoe sizing systems don't share a common base unit, so this tool converts your size to foot length in centimeters first, then maps that length to the equivalent US, UK and EU sizes using standard sizing charts.</p>
+    <h2>Frequently asked questions</h2>
+    <dl class="faq">
+      <dt>Why do results vary slightly between brands?</dt>
+      <dd>Sizing charts are standardized guidelines — actual fit varies by brand, last shape and country of manufacture, so always check a specific brand's chart when possible.</dd>
+    </dl>
+  </div>
+</div>
+<script>
+function calcShoe(){
+  const gender = document.getElementById('shGender').value;
+  const from = document.getElementById('shFrom').value;
+  const size = parseFloat(document.getElementById('shSize').value);
+  const out = document.getElementById('shOut');
+  if(isNaN(size)){ out.innerHTML='<div class="placeholder">Enter a valid size.</div>'; return; }
+  let cm;
+  if(gender==='mens'){
+    if(from==='us') cm = size*0.847+18.2;
+    else if(from==='uk') cm = (size+1)*0.847+18.2;
+    else cm = size*(2/3)+1.5*2.54/2 + 0; // fallback below
+  } else {
+    if(from==='us') cm = size*0.847+16.9;
+    else if(from==='uk') cm = (size+2)*0.847+16.9;
+  }
+  if(from==='eu'){ cm = size*(2/3); }
+  let usSize, ukSize, euSize;
+  if(gender==='mens'){
+    usSize = (cm-18.2)/0.847;
+    ukSize = usSize-1;
+  } else {
+    usSize = (cm-16.9)/0.847;
+    ukSize = usSize-2;
+  }
+  euSize = cm/(2/3);
+  out.innerHTML = `<div class="result-figure">${cm.toFixed(1)}<span class="result-unit">cm foot length</span></div>
+  <div class="result-list">
+    <div><span>US size</span><b>${usSize.toFixed(1)}</b></div>
+    <div><span>UK size</span><b>${ukSize.toFixed(1)}</b></div>
+    <div><span>EU size</span><b>${euSize.toFixed(1)}</b></div>
+  </div>`;
+}
+</script>
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+      <p>45+ free calculators for date &amp; time, home, money, electronics and more. No sign-up, no clutter, just fast answers.</p>
+      <div class="social-links">
+      <a href="#" class="social-icon" aria-label="Facebook" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M13.5 21v-7.6h2.6l.4-3H13.5V8.3c0-.87.24-1.46 1.5-1.46h1.6V4.14C16.3 4.1 15.4 4 14.3 4c-2.28 0-3.8 1.39-3.8 3.94v2.46H8v3h2.5V21h3z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="X (Twitter)" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M18.9 3H22l-7.2 8.2L23 21h-6.6l-5.2-6.4L5.3 21H2.2l7.7-8.8L2 3h6.7l4.7 5.9L18.9 3zm-1.1 16h1.7L7.3 4.9H5.5L17.8 19z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="Instagram" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2zm0 5.9a2.3 2.3 0 1 1 0-4.6 2.3 2.3 0 0 1 0 4.6zM16.9 6.2a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7z"/><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5zm3.5 15a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5h10A3.5 3.5 0 0 1 20.5 7v10z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="YouTube" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5A2.7 2.7 0 0 0 2.4 7.6 28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15V9l5.2 3-5.2 3z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h3>Categories</h3>
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing &amp; Building</a>
+      <a href="../index.html#everyday">Everyday Utility</a>
+      <a href="../index.html#electronics">Electronics</a>
+      <a href="../index.html#internet">Internet</a>
+    </div>
+    <div class="footer-col">
+      <h3>Popular Tools</h3>
+      <a href="../calc/age.html">Age Calculator</a>
+      <a href="../calc/date.html">Date Calculator</a>
+      <a href="../calc/tip.html">Tip Calculator</a>
+      <a href="../calc/gpa.html">GPA Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h3>Our Other Projects</h3>
+      <a href="https://quran-pro.github.io" target="_blank" rel="noopener">Quran Pro</a>
+      <a href="https://quran-pro.github.io/namaz-guide.html" target="_blank" rel="noopener">Namaz Guide</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <div>&copy; 2026 CalcTape. All calculators are provided for estimation purposes only.</div>
+    <div><a href="../index.html">All calculators</a></div>
+  </div>
+</footer>
+</body>
+</html>

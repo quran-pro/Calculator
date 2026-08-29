@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade Calculator — Weighted Average Course Grade | CalcTape</title>
+<meta name="description" content="Calculate your overall course grade from weighted categories like homework, tests and exams.">
+<link rel="canonical" href="https://calctape.example.com/calc/grade.html">
+<meta property="og:title" content="Grade Calculator — Weighted Average Course Grade | CalcTape">
+<meta property="og:description" content="Calculate your overall course grade from weighted categories like homework, tests and exams.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="../assets/style.css">
+<script defer src="../assets/main.js"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Grade Calculator",
+  "applicationCategory":"UtilityApplication",
+  "operatingSystem":"Any",
+  "description":"Calculate a weighted average course grade.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://calctape.example.com/index.html"},
+    {"@type":"ListItem","position":2,"name":"Everyday Utility","item":"https://calctape.example.com/index.html#everyday"},
+    {"@type":"ListItem","position":3,"name":"Grade Calculator","item":"https://calctape.example.com/calc/grade.html"}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to calculator</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing</a>
+      <a href="../index.html#everyday">Everyday</a>
+      <a href="../index.html#internet">Internet</a>
+      <div class="nav-more">
+        <button class="nav-more-btn" id="moreBtn" type="button" aria-haspopup="true" aria-expanded="false">More <span class="caret">&#9662;</span></button>
+        <div class="nav-more-menu" id="moreMenu">
+          <a href="../index.html#entertainment">Entertainment</a>
+          <a href="../index.html#transport">Transportation</a>
+          <a href="../index.html#electronics">Electronics</a>
+          <a href="../index.html#weather">Weather</a>
+          <a href="../index.html#measure">Measurements</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#everyday">Everyday Utility</a> / Grade Calculator</div>
+<div class="wrap calc-page" id="main">
+  <div class="calc-head">
+    <span class="eyebrow">Everyday Utility</span>
+    <h1>Grade Calculator</h1>
+    <p>Calculate your overall grade from up to four weighted categories, such as homework, quizzes, tests and a final exam.</p>
+  </div>
+  <div class="calc-layout">
+    <div class="panel">
+      <h2>Enter details</h2>
+      <div class="row"><div class="field"><label for="gr1n">Category 1 name</label><input type="text" id="gr1n" value="Homework" ></div><div class="field"><label for="gr1s">Score %</label><input type="number" id="gr1s" value="90" ></div></div>      <div class="field"><label for="gr1w">Weight % 1</label><input type="number" id="gr1w" value="20" ></div>      <div class="row"><div class="field"><label for="gr2n">Category 2 name</label><input type="text" id="gr2n" value="Tests" ></div><div class="field"><label for="gr2s">Score %</label><input type="number" id="gr2s" value="85" ></div></div>      <div class="field"><label for="gr2w">Weight % 2</label><input type="number" id="gr2w" value="40" ></div>      <div class="row"><div class="field"><label for="gr3n">Category 3 name</label><input type="text" id="gr3n" value="Final Exam" ></div><div class="field"><label for="gr3s">Score %</label><input type="number" id="gr3s" value="80" ></div></div>      <div class="field"><label for="gr3w">Weight % 3</label><input type="number" id="gr3w" value="40" ></div>
+      <button class="calc-btn" onclick="calcGrade()">Calculate final grade</button>
+    </div>
+    <div class="panel result-panel">
+      <h2>Result</h2>
+      <div id="grdOut" class="placeholder">Enter scores and weights to see your grade.</div>
+    </div>
+  </div>
+  <div class="content-block">
+    <h2>How it works</h2>
+    <p>Each category's score is multiplied by its weight, the results are summed, then divided by the total weight — the standard way instructors compute a weighted course grade.</p>
+    <h2>Frequently asked questions</h2>
+    <dl class="faq">
+      <dt>What if my weights don't add up to 100%?</dt>
+      <dd>The calculator normalizes by dividing by your total weight, so the result stays accurate even if weights sum to something other than 100.</dd>
+    </dl>
+  </div>
+</div>
+<script>
+function calcGrade(){
+  const cats = [1,2,3].map(i=>({
+    name: document.getElementById('gr'+i+'n').value || ('Category '+i),
+    score: parseFloat(document.getElementById('gr'+i+'s').value),
+    weight: parseFloat(document.getElementById('gr'+i+'w').value)
+  })).filter(c=>!isNaN(c.score) && !isNaN(c.weight) && c.weight>0);
+  const out = document.getElementById('grdOut');
+  if(cats.length===0){ out.innerHTML='<div class="placeholder">Enter at least one score and weight.</div>'; return; }
+  const totalWeight = cats.reduce((s,c)=>s+c.weight,0);
+  const weighted = cats.reduce((s,c)=>s+c.score*c.weight,0)/totalWeight;
+  let letter='F';
+  if(weighted>=90) letter='A'; else if(weighted>=80) letter='B'; else if(weighted>=70) letter='C'; else if(weighted>=60) letter='D';
+  out.innerHTML = `<div class="result-figure">${weighted.toFixed(1)}%<span class="result-unit">${letter}</span></div>
+  <div class="result-list">${cats.map(c=>`<div><span>${c.name} (${c.weight}%)</span><b>${c.score}%</b></div>`).join('')}</div>`;
+}
+</script>
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <a class="brand" href="../index.html"><span class="mark">Ct</span><span>CalcTape</span></a>
+      <p>45+ free calculators for date &amp; time, home, money, electronics and more. No sign-up, no clutter, just fast answers.</p>
+      <div class="social-links">
+      <a href="#" class="social-icon" aria-label="Facebook" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M13.5 21v-7.6h2.6l.4-3H13.5V8.3c0-.87.24-1.46 1.5-1.46h1.6V4.14C16.3 4.1 15.4 4 14.3 4c-2.28 0-3.8 1.39-3.8 3.94v2.46H8v3h2.5V21h3z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="X (Twitter)" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M18.9 3H22l-7.2 8.2L23 21h-6.6l-5.2-6.4L5.3 21H2.2l7.7-8.8L2 3h6.7l4.7 5.9L18.9 3zm-1.1 16h1.7L7.3 4.9H5.5L17.8 19z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="Instagram" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2zm0 5.9a2.3 2.3 0 1 1 0-4.6 2.3 2.3 0 0 1 0 4.6zM16.9 6.2a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7z"/><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5zm3.5 15a3.5 3.5 0 0 1-3.5 3.5H7A3.5 3.5 0 0 1 3.5 17V7A3.5 3.5 0 0 1 7 3.5h10A3.5 3.5 0 0 1 20.5 7v10z"/></svg></a>
+      <a href="#" class="social-icon" aria-label="YouTube" title="Coming soon"><svg viewBox="0 0 24 24"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5A2.7 2.7 0 0 0 2.4 7.6 28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15V9l5.2 3-5.2 3z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h3>Categories</h3>
+      <a href="../index.html#date-time">Date &amp; Time</a>
+      <a href="../index.html#housing">Housing &amp; Building</a>
+      <a href="../index.html#everyday">Everyday Utility</a>
+      <a href="../index.html#electronics">Electronics</a>
+      <a href="../index.html#internet">Internet</a>
+    </div>
+    <div class="footer-col">
+      <h3>Popular Tools</h3>
+      <a href="../calc/age.html">Age Calculator</a>
+      <a href="../calc/date.html">Date Calculator</a>
+      <a href="../calc/tip.html">Tip Calculator</a>
+      <a href="../calc/gpa.html">GPA Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h3>Our Other Projects</h3>
+      <a href="https://quran-pro.github.io" target="_blank" rel="noopener">Quran Pro</a>
+      <a href="https://quran-pro.github.io/namaz-guide.html" target="_blank" rel="noopener">Namaz Guide</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <div>&copy; 2026 CalcTape. All calculators are provided for estimation purposes only.</div>
+    <div><a href="../index.html">All calculators</a></div>
+  </div>
+</footer>
+</body>
+</html>
