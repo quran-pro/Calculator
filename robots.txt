@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://calctape.example.com/sitemap.xml
